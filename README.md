@@ -1,12 +1,10 @@
-## Welcome to GitHub Pages
+## 欢迎来到玲珑创世博客
 
-You can use the [editor on GitHub](https://github.com/GeorgeXc/linglongWeTech/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+本博客主要翻译编程方面的文章
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Go语言编程系列文章
 
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+[go语言小技巧](./gotech/go101tips.md)
 
 ```markdown
 Syntax highlighted code block
