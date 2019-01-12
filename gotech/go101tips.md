@@ -59,3 +59,35 @@ func main(){
 ```
 
 换句话说，在赋值中一个函数调用不应该影响非函数调用表达式的赋值结果，详细原因请参考[赋值顺序] [https://go101.org/article/evaluation-orders.html]
+
+## 标准库中的部分类型的值不可以被复制
+
+不推荐对`bytes.Buffer`,`strings.Builder`和`sync`包中类型进行值复制。他们其实不能被复制，尽管在某些情况下复制时不会出现问题。
+
+`strings.Builder`的实现会检测非法的值拷贝。一旦发生这种情况，panic将会发生。例如:
+
+```go
+package main
+
+import ( "strings" )
+func main() {
+    var b strings.Builder
+    b.WriteString("hello")
+    var b2 = b 
+    b2.WriteString("world") //will panic here
+}
+```
+
+`sync`包中的类型发生值拷贝的时候，将会被`go vet`命令警告
+
+```go
+package demo
+import "sync"
+
+func f(m sync.Mutex) {
+    m.Lock()
+    defer m.Unlock()
+}
+```
+
+`bytes.Buffer`的只靠吧将永远无法在运行时或者`go vet`命令检测到。只能在使用时多注意。
