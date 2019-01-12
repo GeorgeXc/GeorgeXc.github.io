@@ -91,3 +91,32 @@ func f(m sync.Mutex) {
 ```
 
 `bytes.Buffer`的只靠吧将永远无法在运行时或者`go vet`命令检测到。只能在使用时多注意。
+
+## 如何不用`reflect`快速检测一个类型是否有某个方法
+
+使用下面的例子中的方法
+
+```go
+package main
+
+import "fmt"
+
+type A int
+type B int 
+func (b B) M(x int) string {
+    return fmt.Sprint(b,":",x)
+}
+
+func check(v interface{}) bool {
+    _,has:=v.(interface{M(int)string})
+    return has
+}
+
+func main() {
+    var a A = 123
+    var b B =789
+    fmt.Println(check(a))
+    fmt.Println(check(b))
+}
+```
+
