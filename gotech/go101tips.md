@@ -144,7 +144,7 @@ func writeManyFiles(files []File)error{
         }
     }
 
-    return nil 
+    return nil
 }
 ```
 
