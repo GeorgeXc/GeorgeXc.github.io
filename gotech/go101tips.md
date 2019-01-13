@@ -140,7 +140,7 @@ func writeManyFiles(files []File)error{
         }
         err = f.Sync()
         if err !=nil {
-            return err 
+            return err
         }
     }
 
