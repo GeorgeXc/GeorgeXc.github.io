@@ -121,3 +121,54 @@ func main() {
 }
 ```
 
+## 延迟执行函数调用导致的资源泄露
+
+一个非常大的延迟调用栈可以消耗许多内存，未执行的延迟调用可以阻止某些资源被及时的释放掉。例如，如果一个调用中有许多文件需要被处理，这样的话很多文件句柄在函数退出之前将不会被释放掉。
+
+```go
+func writeManyFiles(files []File)error{
+    for _,file:= range files {
+        f,err:= os.Open(file.Path)
+        if err !=nil {
+            return err 
+        }
+        defer f.Close()
+
+        _,err = f.WriteString(file.content)
+        if err !=nil {
+            return err
+        }
+        err = f.Sync()
+        if err !=nil {
+            return err 
+        }
+    }
+
+    return nil 
+}
+```
+
+对于这种情况，我们可以实验一个匿名函数来关闭延迟执行调用，以便它及早退出。例如，上面的函数可以写成下面的样子:
+
+```go
+func writeManyFiles(files []File) error {
+    for _,file:= range files {
+        if err := func() error{
+            f,err:=os.Open(file.Path)
+            if err !=nil {
+                return err 
+            }
+            defer f.Close()
+
+            _,err = f.WriteString(file.Content)
+            if err !=nil {
+                return err
+            }
+            return f.Sync()
+        }();err!=nil {
+            return nil
+        }
+    }
+    return nil
+}
+```
