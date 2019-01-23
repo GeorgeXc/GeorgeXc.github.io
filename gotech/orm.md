@@ -66,17 +66,17 @@ func main() {
 | `db.Find(&users, map[string]interface{}{"age": 20})`                                      | `SELECT * FROM users WHERE age = 20;`                                                                            |                     |                  |
 | `db.Set("gorm:query_option", "FOR UPDATE").First(&user, 10)`                              | ` SELECT * FROM users WHERE id = 10 FOR UPDATE;`                                                                 |                     |                  |
 | `db.FirstOrInit(&user, User{Name: "non_existing"})`                                       | 不存在在创建一条                                                                                                         |                     |                  |
+| `db.Where(User{Name: "Jinzhu"}).FirstOrInit(&user)`                                       |                                                                                                                  |                     |                  |
+| `db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})`                         |                                                                                                                  |                     |                  |
+| `db.Select("name, age").Find(&users)`                                                     | `SELECT name, age FROM users;`                                                                                   |                     |                  |
+| `db.Select([]string{"name", "age"}).Find(&users)`                                         | `SELECT name, age FROM users;`                                                                                   |                     |                  |
+| `db.Table("users").Select("COALESCE(age,?)", 42).Rows()`                                  | `SELECT COALESCE(age,'42') FROM users;`                                                                          |                     |                  |
 
 
 
 
 
 
-| `db.Where(User{Name: "Jinzhu"}).FirstOrInit(&user)`                                         |                                                                                                                    |                       |         |
-| `db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})`                           |                                                                                                                    |                       |         |
-| `db.Select("name, age").Find(&users)`                                                       | `SELECT name, age FROM users;`                                                                                     |                       |         |
-| `db.Select([]string{"name", "age"}).Find(&users)`                                           | `SELECT name, age FROM users;`                                                                                     |                       |         |
-| `db.Table("users").Select("COALESCE(age,?)", 42).Rows()`                                    | `SELECT COALESCE(age,'42') FROM users;`                                                                            |                       |         |
 
 
 看了上面这么多的用法，你眼花了没?
