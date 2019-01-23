@@ -73,12 +73,6 @@ func main() {
 | `db.Table("users").Select("COALESCE(age,?)", 42).Rows()`                                  | `SELECT COALESCE(age,'42') FROM users;`                                                                          |                     |                  |
 
 
-
-
-
-
-
-
 看了上面这么多的用法，你眼花了没?
 上面这么多用法，你记住了几种，知道其中的特别注意事项吗？
 我敢肯定你一定记不住。
